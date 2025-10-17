@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: zisakudapyakasutamugpttukutta13666
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn server:app"
