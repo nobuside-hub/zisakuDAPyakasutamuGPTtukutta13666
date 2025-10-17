@@ -1,0 +1,2 @@
+# zisakuDAPyakasutamuGPTtukutta13666
+AI構想や分析システム
