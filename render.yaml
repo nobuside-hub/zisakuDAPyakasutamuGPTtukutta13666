@@ -7,6 +7,5 @@ services:
     buildCommand: |
       pip install --upgrade pip
     startCommand: |
-      pip install --no-cache-dir -r requirements.txt
-      python3 app.py
+      pip install flask openai requests && python3 app.py
     autoDeploy: true
