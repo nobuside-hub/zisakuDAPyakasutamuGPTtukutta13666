@@ -1,12 +1,2 @@
-services:
-  - type: web
-    name: zisakuDAPyakasutamuGPTtukutta13666
-    env: python
-    plan: free
-    region: singapore
-    buildCommand: |
-      pip install --upgrade pip
-    startCommand: |
-      pip install flask openai requests --no-cache-dir
-      python3 app.py
-    autoDeploy: true
+buildCommand: "pip install -r requirements.txt"
+startCommand: "python3 app.py"
