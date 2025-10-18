@@ -4,6 +4,6 @@ services:
     env: python
     plan: free
     region: singapore
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "python3 -m pip install -r requirements.txt"
     startCommand: "python3 bunsekiyou.py"
     autoDeploy: true
