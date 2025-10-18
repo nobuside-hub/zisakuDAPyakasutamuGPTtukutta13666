@@ -1,6 +1,9 @@
 services:
   - type: web
-    name: zisakudapyakasutamugpttukutta13666
+    name: zisakuDAPyakasutamuGPTtukutta13666
     env: python
+    plan: free
+    region: singapore
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn server:app"
+    startCommand: "python dynamic_core.py"
+    autoDeploy: true
