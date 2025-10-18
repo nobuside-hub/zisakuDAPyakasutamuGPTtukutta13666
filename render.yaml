@@ -6,6 +6,7 @@ services:
     region: singapore
     buildCommand: |
       pip install --upgrade pip
-      pip install -r requirements.txt
-    startCommand: python3 app.py
+    startCommand: |
+      pip install --no-cache-dir -r requirements.txt
+      python3 app.py
     autoDeploy: true
