@@ -1,4 +1,4 @@
-# dynamic_core.py
+# app.py
 # ----------------------------
 # AI構想・分析エンジン「DynamicCore」
 # Flaskサーバー統合版（Render対応）
@@ -11,6 +11,9 @@ import os
 from flask import Flask, request, jsonify
 
 
+# ==============================
+# DynamicCore クラス
+# ==============================
 class DynamicCore:
     def __init__(self):
         self.memory = {}
@@ -109,17 +112,26 @@ class DynamicCore:
         return result
 
 
-# --- Flaskサーバー部（Renderで動作） ---
+# ==============================
+# Flaskアプリ設定
+# ==============================
 app = Flask(__name__)
 core = DynamicCore()
 
 
-@app.route("/process_request", methods=["POST"])
-def process_request():
+@app.route("/process", methods=["POST"])
+def process():
+    """ユーザー入力を処理"""
     data = request.get_json()
     if not data or "user_input" not in data:
         return jsonify({"error": "user_input が必要です"}), 400
-    return jsonify(core.request_handler(data["user_input"]))
+    result = core.request_handler(data["user_input"])
+    return jsonify(result)
+
+
+@app.route("/")
+def home():
+    return "DynamicCore AI System is running."
 
 
 @app.route("/health", methods=["GET"])
@@ -127,6 +139,9 @@ def health():
     return jsonify({"status": "ok"}), 200
 
 
+# ==============================
+# メイン実行部
+# ==============================
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
