@@ -6,6 +6,6 @@ services:
     region: singapore
     buildCommand: |
       python3 -m pip install --upgrade pip
-      python3 -m pip install --user -r requirements.txt
+      python3 -m pip install --break-system-packages -r requirements.txt
     startCommand: python3 app.py
     autoDeploy: true
