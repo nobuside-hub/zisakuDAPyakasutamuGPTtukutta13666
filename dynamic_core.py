@@ -1,6 +1,15 @@
+# dynamic_core.py
+# ----------------------------
+# AI構想・分析エンジン「DynamicCore」
+# Flaskサーバー統合版（Render対応）
+# ----------------------------
+
 import gc
 import datetime
 import random
+import os
+from flask import Flask, request, jsonify
+
 
 class DynamicCore:
     def __init__(self):
@@ -94,7 +103,30 @@ class DynamicCore:
                 self.log("Task complete.")
         except Exception as e:
             self.log(f"Execution failed: {e}", level="ERROR")
-            result = f"エラー発生: {e}"
+            result = {"error": str(e)}
         finally:
             self.clear_logs(keep_errors=True)
         return result
+
+
+# --- Flaskサーバー部（Renderで動作） ---
+app = Flask(__name__)
+core = DynamicCore()
+
+
+@app.route("/process_request", methods=["POST"])
+def process_request():
+    data = request.get_json()
+    if not data or "user_input" not in data:
+        return jsonify({"error": "user_input が必要です"}), 400
+    return jsonify(core.request_handler(data["user_input"]))
+
+
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "ok"}), 200
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
