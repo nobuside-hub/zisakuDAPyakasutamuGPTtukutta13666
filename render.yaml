@@ -5,7 +5,7 @@ services:
     plan: free
     region: singapore
     buildCommand: |
-      pip install --upgrade pip
-    startCommand: |
-      pip install flask openai requests && python3 app.py
+      python3 -m pip install --upgrade pip
+      python3 -m pip install --user -r requirements.txt
+    startCommand: python3 app.py
     autoDeploy: true
