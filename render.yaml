@@ -4,6 +4,6 @@ services:
     env: python
     plan: free
     region: singapore
-    buildCommand: "python3 -m pip install -r requirements.txt"
-    startCommand: "python3 bunsekiyou.py"
+    buildCommand: "python3 -m ensurepip --upgrade && python3 -m pip install --no-cache-dir --upgrade pip && python3 -m pip install --no-cache-dir flask openai requests"
+    startCommand: "python3 app.py"
     autoDeploy: true
