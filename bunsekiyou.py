@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from bunsekiyou import DynamicCore
+from app import DynamicCore
 
 app = Flask(__name__)
 core = DynamicCore()
