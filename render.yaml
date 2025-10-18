@@ -4,12 +4,6 @@ services:
     env: python
     plan: free
     region: singapore
-    buildCommand: |
-      python3 -m venv venv
-      . venv/bin/activate
-      pip install --upgrade pip
-      pip install -r requirements.txt
-    startCommand: |
-      . venv/bin/activate
-      python3 app.py
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python3 app.py"
     autoDeploy: true
