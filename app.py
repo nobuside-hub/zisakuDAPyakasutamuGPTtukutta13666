@@ -1,15 +1,8 @@
-# app.py
-# ----------------------------
-# AI構想・分析エンジン「DynamicCore」
-# Flaskサーバー統合版（Render対応）
-# ----------------------------
-
-import gc
+import os
 import datetime
 import random
-import os
+import gc
 from flask import Flask, request, jsonify
-
 
 # ==============================
 # DynamicCore クラス
@@ -19,7 +12,7 @@ class DynamicCore:
         self.memory = {}
         self.active_module = None
         self.logs = []
-        self.mode = "standard"  # 'standard' or 'conceptual'
+        self.mode = "standard"
 
     def log(self, message, level="INFO"):
         timestamp = datetime.datetime.now().strftime("%H:%M:%S")
@@ -59,7 +52,6 @@ class DynamicCore:
             return {"trend": "上昇傾向", "confidence": 0.84}
 
         def generate_concept(prompt):
-            """構想モード：概念生成＋思考展開"""
             ideas = [
                 "融合的知性の設計",
                 "自己再帰的創造のアルゴリズム",
@@ -87,7 +79,7 @@ class DynamicCore:
         return type("TempModule", (), {"run": code})()
 
     def clear_logs(self, keep_errors=False):
-        """ログを削除。ただしエラーのみ保持可能"""
+        """ログ削除"""
         if keep_errors:
             self.logs = [l for l in self.logs if "[ERROR]" in l]
         else:
@@ -95,7 +87,7 @@ class DynamicCore:
         gc.collect()
 
     def request_handler(self, user_input):
-        """入力処理のメイン"""
+        """入力処理メイン"""
         spec = self.analyze_request(user_input)
         self.active_module = self.spawn_module(spec)
         try:
@@ -118,7 +110,6 @@ class DynamicCore:
 app = Flask(__name__)
 core = DynamicCore()
 
-
 @app.route("/process", methods=["POST"])
 def process():
     """ユーザー入力を処理"""
@@ -128,20 +119,14 @@ def process():
     result = core.request_handler(data["user_input"])
     return jsonify(result)
 
-
 @app.route("/")
 def home():
     return "DynamicCore AI System is running."
-
 
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok"}), 200
 
-
-# ==============================
-# メイン実行部
-# ==============================
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    port = int(os.environ.get("PORT", 10000))  # Renderが指定したPORTを使用
+    app.run(host="0.0.0.0", port=port)
