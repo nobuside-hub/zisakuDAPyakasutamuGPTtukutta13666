@@ -13,4 +13,17 @@ services:
     startCommand: |
       . venv/bin/activate
       python app.py
-    autoDeploy: true
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"             # ログを即時出力
+      - key: PORT
+        value: "10000"         # Flaskのポート固定
+      - key: VOICE_ENGINE_URL
+        value: "http://localhost:50021"  # ← VOICEVOXエンジンをローカル指定
+      - key: TTS_MODE
+        value: "gtts"          # または "voicevox"
+    disk:
+      name: yurika-voice-cache
+      mountPath: /tmp          # 音声ファイルの一時保存
+      sizeGB: 1
+    autoDeploy: false          # 自動デプロイを無効化（手動で制御）
