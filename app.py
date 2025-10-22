@@ -5,7 +5,7 @@ import gc
 from flask import Flask, request, jsonify
 
 # ==============================
-# DynamicCore クラス
+# DynamicCore クラス（修正版）
 # ==============================
 class DynamicCore:
     def __init__(self):
@@ -36,7 +36,7 @@ class DynamicCore:
             return "unknown"
 
     def spawn_module(self, spec):
-        """動的モジュール生成"""
+        """動的モジュール生成（self引数エラー修正版）"""
         self.log(f"Spawning module for spec: {spec}")
 
         def extract_keywords(text):
@@ -65,18 +65,24 @@ class DynamicCore:
                 "mode": "conceptual"
             }
 
+        # ---- 処理の分岐（ここを修正済） ----
         if spec == "text_analysis":
-            code = lambda x: {"keywords": extract_keywords(x), "tone": detect_tone(x)}
+            func = lambda x: {"keywords": extract_keywords(x), "tone": detect_tone(x)}
         elif spec == "simulation":
-            code = lambda x: run_simulation(x)
+            func = lambda x: run_simulation(x)
         elif spec == "forecast":
-            code = lambda x: predict_trend(x)
+            func = lambda x: predict_trend(x)
         elif spec == "concept_generation":
-            code = lambda x: generate_concept(x)
+            func = lambda x: generate_concept(x)
         else:
-            code = lambda x: "対応外の処理です"
+            func = lambda x: {"error": "対応外の処理です"}
 
-        return type("TempModule", (), {"run": code})()
+        # ---- 修正版クラス ----
+        class TempModule:
+            def run(self, text):
+                return func(text)
+
+        return TempModule()
 
     def clear_logs(self, keep_errors=False):
         """ログ削除"""
@@ -128,5 +134,5 @@ def health():
     return jsonify({"status": "ok"}), 200
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # Renderが指定したPORTを使用
+    port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
