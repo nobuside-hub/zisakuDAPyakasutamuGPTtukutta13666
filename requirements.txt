@@ -1,3 +1,17 @@
+# --- Core ---
 flask==3.0.3
-openai==1.43.0
 requests==2.32.3
+openai==1.43.0
+
+# --- Voice (choose one or both) ---
+gTTS==2.5.1        # オンラインTTS（可愛いギャル声用）
+pyttsx3==2.90      # オフライン音声（ネット不要）
+# VOICEVOXを使うならHTTP経由なので追加ライブラリ不要
+
+# --- Simulation / Calculation ---
+numpy==2.1.0
+pandas==2.2.3      # データ処理（未来予測用）
+scikit-learn==1.5.2  # 線形回帰などの予測処理に必要
+
+# --- Utility ---
+gunicorn==23.0.0   # Renderデプロイ時の安定起動用
