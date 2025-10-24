@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: yurika-tts
+    env: python
+    plan: free
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 1 --threads 1 --bind 0.0.0.0:$PORT
