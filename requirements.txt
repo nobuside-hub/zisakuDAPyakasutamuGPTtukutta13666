@@ -1,0 +1,4 @@
+flask==3.0.3
+gunicorn==23.0.0
+pyopenjtalk==0.3.3
+numpy>=1.26.0
